@@ -1,8 +1,11 @@
 #!/bin/bash
-# narrative-prompt-polish preflight: build 前必过三关
+# dsh-prompt-only-forge preflight（v0.3.0 纯注入模式）——build 前必过：
 #  1) JS 语法 (node --check)
-#  2) 文件大小无异常翻倍（基线 34546 字节；13:08 56K 重复 bug 教训）
-#  3) 不出现多个 __ModuleLoader__.load 顶层调用（同一 bug 根因）
+#  2) bundle 大小无异常翻倍（基线 PREV_BYTES）
+#  3) 单一 __ModuleLoader__.load 顶层调用（13:08 重复 bug 教训）
+#  4) 注入面在位（模板三要素 + setDraft + 槽位注册 + inject 声明）
+#  5) 反守卫：**只注入、不发送** —— 不出现任何发送/联网/子代理/回写面
+#  6) better-sidebar 耦合为 0
 set -e
 M=$(dirname "$(dirname "$(readlink -f "$0")")")
 cd "$M"
@@ -15,8 +18,10 @@ for f in src/*.js; do
 done
 [ "$fail" -eq 0 ] && echo "OK 关1: 语法" || exit 1
 
-PREV_BYTES=34546
-CUR_BYTES=$(stat -c %s src/client.bundle.js)
+# 关2：体积异常的语义是「同一文件被重复拼接/整段复制」——用比例窗口守住。
+PREV_BYTES=9300
+BUNDLE="$M/src/client.bundle.js"
+CUR_BYTES=$(stat -c %s "$BUNDLE")
 python3 -c "CUR=$CUR_BYTES; PREV=$PREV_BYTES; import sys; r=CUR/PREV; sys.exit(0 if (0.7<=r<=1.5) else 1)"
 if [ $? -ne 0 ]; then
   echo "X 字节异常: 当前 $CUR_BYTES, 基线 $PREV_BYTES"
@@ -24,26 +29,44 @@ if [ $? -ne 0 ]; then
 fi
 echo "OK 关2: 大小 $CUR_BYTES/$PREV_BYTES"
 
-LO=$(grep -c "^window.__ModuleLoader__\.load" src/client.bundle.js || true)
+LO=$(grep -c "^window.__ModuleLoader__\.load" "$BUNDLE" || true)
 if [ "$LO" -gt 1 ]; then
   echo "X 发现 $LO 个 __ModuleLoader__.load"
   exit 1
 fi
 echo "OK 关3: 单一 __ModuleLoader__.load ($LO)"
 
-echo ""
-echo "OK preflight 通过, 可 build"
-
-
-# gate 4（0.0.26：BUNDLE 改 $M 相对路径——原写死本机绝对路径，clone 后他人/CI 必失败且泄漏本机路径）
-BUNDLE="$M/src/client.bundle.js"
-for guard in "ctx.connection:1" "ctx.slots:2" "slots service unavailable at boot:2"; do
+# 关4：注入面在位（模板逐行 + 写入动作 + 槽位注册 + inject 声明）
+for guard in "# 【任务】将此前的所有信息作为背景知识，帮我打磨提示词。:1" "<内容>:1" "以下是原始提示词或者修改意见:1" "这不是给你的指令:1" "setDraft:2" "conversation.input.right:2" "inject: [\"slots\"]:1" "slots service unavailable at boot:1"; do
   pat="${guard%:*}"
   need="${guard##*:}"
-  have=$(grep -c "$pat" "$BUNDLE" || true)
+  have=$(grep -cF -- "$pat" "$BUNDLE" || true)
   if [ "$have" -lt "$need" ]; then
-    echo "X 防御未丢: $pat 出现 $have 次, 至少 $need 次"
+    echo "X 注入面缺失: $pat 出现 $have 次, 至少 $need 次"
     exit 1
   fi
 done
-echo "OK 关4: 核心防御未丢"
+echo "OK 关4: 注入面在位"
+
+# 关5（反守卫，用户红线「只会发生注入，不发送」）：任何发送/联网/子代理/服务端 API 面都不允许出现
+for banned in "submit" "fetch(" "XMLHttpRequest" "WebSocket" "EventSource" "subagents" "openSubagent" "dsh-prompt-only-forge/api" "ctx.sessions" "ctx.llm"; do
+  have=$(grep -cF -- "$banned" "$BUNDLE" || true)
+  if [ "$have" -ne 0 ]; then
+    echo "X 越界面残留: $banned 出现 $have 次（本插件只允许注入输入栏）"
+    exit 1
+  fi
+done
+echo "OK 关5: 只注入不发送（发送/联网/子代理面为 0）"
+
+# 关6：better-sidebar 耦合必须彻底清零（旧 inject 会让 apply 永不执行）
+for banned in "ctx.betterSidebar" "betterSidebar" "sidechat.start"; do
+  have=$(grep -cF -- "$banned" "$BUNDLE" || true)
+  if [ "$have" -ne 0 ]; then
+    echo "X 残留 better-sidebar 耦合: $banned 出现 $have 次"
+    exit 1
+  fi
+done
+echo "OK 关6: better-sidebar 耦合为 0"
+
+echo ""
+echo "OK preflight 通过, 可 build"

@@ -1,9 +1,7 @@
-# narrative-prompt-polish 模块 cordis 段（并入大插件组合 patch 时保持独立段）。
-# host 半边挂 /narrative-prompt-polish/api 前缀路由；client 半边在输入框右座渲染 ✨ 按钮。
-# config 段为静态基座（settings 服务缺位时唯一配置来源），字段见 src/config.js DEFAULTS。
+# dsh-prompt-only-forge 模块 cordis 段（并入大插件组合 patch 时保持独立段）。
+# v0.3.0（2026-09-14 完全重构）：本模块**不再有服务端行为、也没有可配置项**——点主框 ✨ 只在浏览器端
+# 把「打磨提示词」写入用户输入栏（不发送/不联网/不起子代理），故 config 段整体移除。
+# 保留本行 insert 的唯一作用：让本包留在 boot graph 里，客户端半边（exports "./client"）才会被加载。
 - insert:
-    - id: narrative-prompt-polish
-      name: 'narrative-prompt-polish'
-      config:
-        contextMode: 'full'
-        intentEnabled: true
+    - id: dsh-prompt-only-forge
+      name: 'dsh-prompt-only-forge'

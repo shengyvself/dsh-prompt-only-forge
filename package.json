@@ -1,7 +1,7 @@
 {
-  "name": "narrative-prompt-polish",
-  "version": "0.1.0",
-  "description": "Shengyv Writing Architecture 提示词优化：主框 ✨ 一键意图感知改写；C 方案复刻完整会话命中 prompt cache；CAS 写回；trace 落盘；sidebar 事件总线联动",
+  "name": "dsh-prompt-only-forge",
+  "version": "0.3.0",
+  "description": "提示词打磨注入：点输入框右座 ✨ 把「打磨提示词」模板写进输入栏（当前草稿自动嵌进 <内容> 位置），不发送、不联网、不调模型——打磨由当前会话的主 agent 带着全部上下文完成",
   "type": "module",
   "license": "MIT",
   "main": "./lib/index.js",
@@ -17,10 +17,8 @@
     "client": {
       "inject": [
         "@deepseek-ai/dsh-client-runtime",
-        "@deepseek-ai/dsh-client-locale",
         "@deepseek-ai/dsh-client-ui-slots",
-        "@deepseek-ai/dsh-client-ui-conversation",
-        "@deepseek-ai/dsh-client-ui-settings"
+        "@deepseek-ai/dsh-client-ui-conversation"
       ],
       "platform": "web"
     }
@@ -32,8 +30,8 @@
   "keywords": [
     "dsh",
     "dsh-plugin",
-    "narrative-studio",
-    "prompt-polish",
+    "prompt-forge",
+    "prompt-inject",
     "writing-architecture"
   ],
   "peerDependencies": {
@@ -41,12 +39,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shengyvself/narrative-prompt-polish.git"
+    "url": "git+https://github.com/shengyvself/dsh-prompt-only-forge.git"
   },
   "bugs": {
-    "url": "https://github.com/shengyvself/narrative-prompt-polish/issues"
+    "url": "https://github.com/shengyvself/dsh-prompt-only-forge/issues"
   },
-  "homepage": "https://github.com/shengyvself/narrative-prompt-polish#readme",
+  "homepage": "https://github.com/shengyvself/dsh-prompt-only-forge#readme",
   "files": [
     "lib",
     "src",
