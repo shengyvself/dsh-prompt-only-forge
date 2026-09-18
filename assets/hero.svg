@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" width="100%" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7f7f8"/>
+      <stop offset="100%" stop-color="#f3eeff"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#faf6ff"/>
+    </linearGradient>
+    <style>
+      .h1 { font: 700 26px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #1e1e1e; }
+      .tagline { font: 400 14px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #555; }
+      .step-title { font: 700 14px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #1e1e1e; }
+      .step-desc { font: 400 11px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #555; }
+      .meta { font: 400 10px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #888; }
+      .badge-text { font: 700 10px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #fff; }
+      .code-text { font: 400 10px 'SF Mono', Monaco, monospace; fill: #333; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="460" fill="url(#bg)" rx="12"/>
+
+  <!-- Header -->
+  <g transform="translate(60, 30)">
+    <text x="0" y="24" class="h1">🔨 dsh-prompt-only-forge</text>
+    <text x="0" y="46" class="tagline">点 ✨ 把「打磨提示词」模板写进输入栏 —— 不发送，让主 agent 带着全部上下文改写</text>
+  </g>
+
+  <!-- Three-step flow -->
+  <g transform="translate(60, 90)">
+    <!-- Step 1: Click ✨ -->
+    <g transform="translate(0, 0)">
+      <rect width="330" height="200" fill="url(#card)" stroke="#e0e2ec" stroke-width="1" rx="10"/>
+      <circle cx="30" cy="30" r="14" fill="#8B5CF6"/>
+      <text x="30" y="34" text-anchor="middle" class="badge-text">1</text>
+      <text x="55" y="34" class="step-title">点输入框右座 ✨</text>
+      <text x="20" y="70" class="step-desc">
+        <tspan x="20">在会话输入框右座</tspan>
+        <tspan x="20" dy="16">（DSH 原生槽位</tspan>
+        <tspan x="20" dy="16">conversation.input.right）</tspan>
+        <tspan x="20" dy="16">点 ✨ 按钮。</tspan>
+      </text>
+      <!-- Icon: composer with ✨ -->
+      <g transform="translate(200, 110)">
+        <rect x="0" y="0" width="100" height="50" fill="#fff" stroke="#ccc" stroke-width="1.5" rx="6"/>
+        <line x1="10" y1="15" x2="80" y2="15" stroke="#ccc" stroke-width="1"/>
+        <line x1="10" y1="25" x2="60" y2="25" stroke="#ccc" stroke-width="1"/>
+        <line x1="10" y1="35" x2="70" y2="35" stroke="#ccc" stroke-width="1"/>
+        <circle cx="90" cy="45" r="8" fill="#8B5CF6"/>
+        <text x="90" y="49" text-anchor="middle" class="badge-text" style="font-size:10px">✨</text>
+      </g>
+    </g>
+
+    <!-- Arrow 1 -->
+    <g transform="translate(340, 90)">
+      <line x1="0" y1="0" x2="20" y2="0" stroke="#8B5CF6" stroke-width="2.5"/>
+      <polygon points="20,-4 28,0 20,4" fill="#8B5CF6"/>
+    </g>
+
+    <!-- Step 2: Template injected -->
+    <g transform="translate(375, 0)">
+      <rect width="330" height="200" fill="url(#card)" stroke="#e0e2ec" stroke-width="1" rx="10"/>
+      <circle cx="30" cy="30" r="14" fill="#8B5CF6"/>
+      <text x="30" y="34" text-anchor="middle" class="badge-text">2</text>
+      <text x="55" y="34" class="step-title">模板注入输入栏</text>
+      <text x="20" y="70" class="step-desc">
+        <tspan x="20">读当前草稿，组装</tspan>
+        <tspan x="20" dy="16">模板文本，写进输入栏</tspan>
+        <tspan x="20" dy="16">（草稿嵌进 &lt;内容&gt;</tspan>
+        <tspan x="20" dy="16">位置，不发送）。</tspan>
+      </text>
+      <!-- Icon: template with placeholder -->
+      <g transform="translate(190, 100)">
+        <rect x="0" y="0" width="120" height="60" fill="#fff" stroke="#ccc" stroke-width="1.5" rx="4"/>
+        <text x="6" y="14" class="code-text"># 【任务】</text>
+        <text x="6" y="28" class="code-text">帮我打磨提示词</text>
+        <text x="6" y="42" class="code-text">- 原始：</text>
+        <rect x="30" y="46" width="80" height="12" fill="#e8e6ff" rx="2"/>
+        <text x="34" y="55" class="code-text" style="font-size:9px; fill:#8B5CF6">[草稿]</text>
+      </g>
+    </g>
+
+    <!-- Arrow 2 -->
+    <g transform="translate(715, 90)">
+      <line x1="0" y1="0" x2="20" y2="0" stroke="#8B5CF6" stroke-width="2.5"/>
+      <polygon points="20,-4 28,0 20,4" fill="#8B5CF6"/>
+    </g>
+
+    <!-- Step 3: Main agent rewrites -->
+    <g transform="translate(750, 0)">
+      <rect width="330" height="200" fill="url(#card)" stroke="#e0e2ec" stroke-width="1" rx="10"/>
+      <circle cx="30" cy="30" r="14" fill="#8B5CF6"/>
+      <text x="30" y="34" text-anchor="middle" class="badge-text">3</text>
+      <text x="55" y="34" class="step-title">主 agent 带着上下文改写</text>
+      <text x="20" y="70" class="step-desc">
+        <tspan x="20">用户按回车发送，</tspan>
+        <tspan x="20" dy="16">当前会话的主 agent</tspan>
+        <tspan x="20" dy="16">（持有全部历史、工具、</tspan>
+        <tspan x="20" dy="16">文件访问）带着上下文</tspan>
+        <tspan x="20" dy="16">改写提示词。</tspan>
+      </text>
+      <!-- Icon: agent with brain -->
+      <g transform="translate(220, 110)">
+        <circle cx="30" cy="30" r="20" fill="#e8e6ff" stroke="#8B5CF6" stroke-width="1.5"/>
+        <text x="30" y="35" text-anchor="middle" class="badge-text" style="font-size:14px">🧠</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Features -->
+  <g transform="translate(60, 320)">
+    <text x="0" y="0" class="step-title" style="font-size:13px">特性</text>
+
+    <g transform="translate(0, 15)">
+      <rect width="260" height="70" fill="#fff" stroke="#0B7285" stroke-width="1.5" rx="8"/>
+      <text x="15" y="22" class="step-title" style="font-size:12px; fill:#0B7285">🚫 只注入不发送</text>
+      <text x="15" y="42" class="step-desc">源码里没有任何 submit</text>
+      <text x="15" y="58" class="step-desc">动作，用户决定是否发送</text>
+    </g>
+
+    <g transform="translate(280, 15)">
+      <rect width="260" height="70" fill="#fff" stroke="#0B7285" stroke-width="1.5" rx="8"/>
+      <text x="15" y="22" class="step-title" style="font-size:12px; fill:#0B7285">🔌 零依赖</text>
+      <text x="15" y="42" class="step-desc">不联网、不调模型、</text>
+      <text x="15" y="58" class="step-desc">不起子代理、不落盘</text>
+    </g>
+
+    <g transform="translate(560, 15)">
+      <rect width="260" height="70" fill="#fff" stroke="#0B7285" stroke-width="1.5" rx="8"/>
+      <text x="15" y="22" class="step-title" style="font-size:12px; fill:#0B7285">🔁 幂等</text>
+      <text x="15" y="42" class="step-desc">已是本模板则不重复</text>
+      <text x="15" y="58" class="step-desc">包裹，只弹轻提示</text>
+    </g>
+
+    <g transform="translate(840, 15)">
+      <rect width="260" height="70" fill="#fff" stroke="#0B7285" stroke-width="1.5" rx="8"/>
+      <text x="15" y="22" class="step-title" style="font-size:12px; fill:#0B7285">🎯 主 agent 改写</text>
+      <text x="15" y="42" class="step-desc">天然持有全部历史、</text>
+      <text x="15" y="58" class="step-desc">工具与文件访问</text>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <g transform="translate(60, 420)">
+    <text class="meta">纯注入 · 零依赖 · 幂等 · 主 agent 改写 · 官方 keyed 槽位 · 替代 narrative-prompt-polish</text>
+  </g>
+</svg>

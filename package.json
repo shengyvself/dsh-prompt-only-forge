@@ -1,7 +1,19 @@
 {
   "name": "dsh-prompt-only-forge",
   "version": "0.3.0",
-  "description": "提示词打磨注入：点输入框右座 ✨ 把「打磨提示词」模板写进输入栏（当前草稿自动嵌进 <内容> 位置），不发送、不联网、不调模型——打磨由当前会话的主 agent 带着全部上下文完成",
+  "description": "Prompt-polish template injector for DSH: click ✨ in the composer to inject a 'polish my prompt' template (current draft auto-embedded), no send, no network, no model — the main agent rewrites with full context.",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "deepseek-harness-plugin",
+    "prompt-forge",
+    "prompt-inject",
+    "prompt-engineering",
+    "writing-architecture",
+    "template-inject",
+    "no-send"
+  ],
   "type": "module",
   "license": "MIT",
   "main": "./lib/index.js",
@@ -9,6 +21,9 @@
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
     "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": "^22.19.0 || >=24"
   },
   "dsh": {
     "bundle": {
@@ -27,13 +42,6 @@
     "build": "node scripts/build.mjs",
     "test": "node --test tests/unit.test.mjs"
   },
-  "keywords": [
-    "dsh",
-    "dsh-plugin",
-    "prompt-forge",
-    "prompt-inject",
-    "writing-architecture"
-  ],
   "peerDependencies": {
     "@deepseek-ai/cordis": ">=4.0.1"
   },
@@ -47,12 +55,15 @@
   "homepage": "https://github.com/shengyvself/dsh-prompt-only-forge#readme",
   "files": [
     "lib",
+    "assets",
     "src",
     "tests",
     "docs",
     "scripts",
     "cordis.patch.yml",
     "README.md",
+    "README.en.md",
+    "CHANGELOG.md",
     "LICENSE"
   ]
 }
